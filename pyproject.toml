@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "escansi"
+version = "0.1.0"
+authors = [
+  {
+    name = "Ricardo JRSM Vieira",
+    email = "ricardojrsmvieira@gmail.com"
+  }
+]
+maintainers = [
+  {
+    name = "Ricardo JRSM Vieira",
+    email = "ricardojrsmvieira@gmail.com"
+  }
+]
+description = "Python library to easily create ANSI escape codes and add them to your text."
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Printing",
+    "Topic :: Terminals",
+    "Typing :: Typed"
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/ricardojrsmvieira/escansi"
+Issues = "https://github.com/ricardojrsmvieira/escansi/issues"
