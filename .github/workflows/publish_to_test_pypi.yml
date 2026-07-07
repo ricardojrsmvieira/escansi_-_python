@@ -9,6 +9,8 @@ concurrency:
 jobs:
   build_and_publish:
     name: Build and publish 📦
+    permissions:
+      id-token: write
     uses: ./.github/workflows/publish.yml
     with:
       test: true

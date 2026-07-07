@@ -38,6 +38,7 @@ jobs:
   publish:
     name: Publish to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: pypi
       url: ${{ inputs.test && 'https://test.pypi.org/p/escansi' || 'https://pypi.org/p/escansi' }}
