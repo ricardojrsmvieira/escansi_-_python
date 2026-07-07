@@ -20,6 +20,7 @@ jobs:
       uses: actions/download-artifact@v6
       with:
         name: python-package-distributions
+        repository: ricardojrsmvieira/escansi_-_python
         path: dist/
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@v1.14.0 # Already attestated
