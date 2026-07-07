@@ -11,6 +11,6 @@ jobs:
     name: Build and publish 📦
     permissions:
       id-token: write
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/build_and_publish.yml
     with:
       test: true
