@@ -1,17 +1,18 @@
-name: Publish to PyPI
+name: Publish to Test PyPI
 
 on: workflow_dispatch
 
+concurrency:
+  group: testpypi_publish
+  cancel-in-progress: true
+
 jobs:
   publish:
-    name: Publish to PyPI
+    name: Publish to Test PyPI
     runs-on: ubuntu-latest
-    concurrency:
-      group: production
-      cancel-in-progress: true
     environment:
-      name: pypi
-      url: https://pypi.org/p/escansi
+      name: testpypi
+      url: https://test.pypi.org/p/escansi
     permissions:
       id-token: write # Mandatory for trusted publishing
     steps:
@@ -20,7 +21,7 @@ jobs:
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution 📦 to PyPI
+    - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@v1.14.0 # Already attestated
       with:
         repository-url: https://test.pypi.org/legacy/

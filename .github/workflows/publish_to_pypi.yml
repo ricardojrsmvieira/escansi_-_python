@@ -2,13 +2,14 @@ name: Publish to PyPI
 
 on: workflow_dispatch
 
+concurrency:
+  group: pypi_publish
+  cancel-in-progress: true
+
 jobs:
   publish:
     name: Publish to PyPI
     runs-on: ubuntu-latest
-    concurrency:
-      group: production
-      cancel-in-progress: true
     environment:
       name: pypi
       url: https://pypi.org/p/escansi
