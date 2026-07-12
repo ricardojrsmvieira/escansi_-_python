@@ -9,9 +9,11 @@ runs:
         python-version: "3.x"
 
     - name: Install pypa/build
+      shell: bash
       run: python3 -m pip install --upgrade build
 
     - name: Build a binary wheel and a source tarball
+      shell: bash
       run: python3 -m build
 
     - name: Store the distribution packages
