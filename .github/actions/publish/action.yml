@@ -32,11 +32,11 @@ runs:
       shell: bash
       run: python3 -m pypi_attestations sign dist/*
 
-    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+    - name: Publish distribution 📦 to ${{ inputs.test == true && 'Test PyPI' || 'PyPI' }}
       shell: bash
       run: |
         python3 -m twine upload \
-        --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+        --repository ${{ inputs.test == true && 'testpypi' || 'pypi' }} \
         --attestations \
         --verbose \
         dist/*
