@@ -3,6 +3,9 @@ name: Build and publish 📦
 on:
   workflow_call:
     inputs:
+      oidc-token:
+        required: true
+        type: string
       test:
         required: false
         type: boolean
@@ -92,13 +95,8 @@ jobs:
     - name: mint API token
       id: mint-token
       run: |
-        # Retrieve the ambient OIDC token
-        resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ inputs.test && 'testpypi' || 'pypi' }}")
-        oidc_token=$(jq -r '.value' <<< "${resp}")
-
         # Exchange the OIDC token for an API token
-        resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
+        resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${inputs.oidc-token}\"}")
         api_token=$(jq -r '.token' <<< "${resp}")
 
         # Mask the newly minted API token
