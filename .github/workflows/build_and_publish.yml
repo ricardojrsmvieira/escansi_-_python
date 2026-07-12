@@ -72,13 +72,13 @@ jobs:
     - name: Attest the distribution packages (PyPI Attestations) 🔏
       run: python3 -m pypi_attestations sign dist/*
 
-    # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-    #   run: |
-    #     python3 -m twine upload \
-    #     --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
-    #     --attestations \
-    #     --verbose \
-    #     dist/*
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+      run: |
+        python3 -m twine upload \
+        --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+        --attestations \
+        --verbose \
+        dist/*
 
 
     # REFERENCE:
@@ -91,26 +91,30 @@ jobs:
     #   - The --attestations flag is not implemented here.
     #   - The --verbose option is not implemented here.
 
+    # - name: mint API token
+    #   id: mint-token
+    #   run: |
+    #     Retrieve the ambient OIDC token
+    #     resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+    #       "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ inputs.test && 'testpypi' || 'pypi' }}")
+    #     oidc_token=$(jq -r '.value' <<< "${resp}")
 
-    - name: mint API token
-      id: mint-token
-      run: |
-        # Exchange the OIDC token for an API token
-        resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${inputs.oidc-token}\"}")
-        api_token=$(jq -r '.token' <<< "${resp}")
+    #     # Exchange the OIDC token for an API token
+    #     resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
+    #     api_token=$(jq -r '.token' <<< "${resp}")
 
-        # Mask the newly minted API token
-        echo "::add-mask::${api_token}"
+    #     # Mask the newly minted API token
+    #     echo "::add-mask::${api_token}"
 
-        # Put the API token in the output variable so that it can be used in the next step
-        echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
+    #     # Put the API token in the output variable so that it can be used in the next step
+    #     echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
 
-    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-      run: |
-        TWINE_USERNAME=__token__ \
-        TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }} \
-        python3 -m twine upload \
-        --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
-        --attestations \
-        --verbose \
-        dist/*
+    # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+    #   run: |
+    #     TWINE_USERNAME=__token__ \
+    #     TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }} \
+    #     python3 -m twine upload \
+    #     --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+    #     --attestations \
+    #     --verbose \
+    #     dist/*

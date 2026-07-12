@@ -14,26 +14,11 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
+    environment:
+      name: test_pypi
+      url: https://test.pypi.org/p/escansi
     steps:
-    - name: Get current ambient OIDC token
-      id: get-ambient-oidc-token
-      run: |
-        # Retrieve the ambient OIDC token
-        resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=testpypi")
-        oidc_token=$(jq -r '.value' <<< "${resp}")
-
-        # Mask the OIDC token
-        echo "::add-mask::${oidc_token}"
-
-        # Put the OIDC token in the output variable so that it can be used in the next step
-        echo "oidc-token=${oidc_token}" >> "${GITHUB_OUTPUT}"
-
     - name: Build and publish to Test PyPI
-      uses: ./.github/workflows/build_and_publish.yml
+      uses: ./.github/actions/build_and_publish
       with:
-        oidc-token: ${{ steps.get-ambient-oidc-token.outputs.oidc-token }}
         test: true
-    # uses: ./.github/workflows/build_and_publish.yml
-    # with:
-    #   test: true

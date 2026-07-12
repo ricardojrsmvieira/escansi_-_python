@@ -1,0 +1,25 @@
+name: Build 📦
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.x"
+
+    - name: Install pypa/build
+      run: python3 -m pip install --upgrade build
+
+    - name: Build a binary wheel and a source tarball
+      run: python3 -m build
+
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v5
+      with:
+        name: python-package-distributions
+        path: dist/
