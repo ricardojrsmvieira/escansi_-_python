@@ -16,6 +16,7 @@ runs:
         path: dist/
 
     - name: Install necessary packages for publishing
+      shell: bash
       run: python3 -m pip install --upgrade \
         twine \
         packaging \
@@ -28,9 +29,11 @@ runs:
         subject-path: dist/
 
     - name: Attest the distribution packages (PyPI Attestations) 🔏
+      shell: bash
       run: python3 -m pypi_attestations sign dist/*
 
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+      shell: bash
       run: |
         python3 -m twine upload \
         --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
