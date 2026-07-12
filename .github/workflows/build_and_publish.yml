@@ -62,29 +62,37 @@ jobs:
       with:
         subject-path: dist/
 
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+      run: python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
+
+
+    # REFERENCE:
+    # - The next 2 steps could replace the above last step.
+    # - We do not need them since twine does the OIDC token exchange for us if no token is provided.
+    # - https://docs.pypi.org/trusted-publishers/using-a-publisher/ has the base implementation, but here I added some
+    #   tweaks to support both PyPI and Test PyPI.
+    # - Note that this was only tested with test.pypi, not with pypi itself.
+
     # - name: mint API token
     #   id: mint-token
     #   run: |
-    #     # retrieve the ambient OIDC token
+    #     # Retrieve the ambient OIDC token
     #     resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
     #       "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ inputs.test && 'testpypi' || 'pypi' }}")
     #     oidc_token=$(jq -r '.value' <<< "${resp}")
 
-    #     # exchange the OIDC token for an API token
+    #     # Exchange the OIDC token for an API token
     #     resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
     #     api_token=$(jq -r '.token' <<< "${resp}")
 
-    #     # mask the newly minted API token, so that we don't accidentally leak it
+    #     # Mask the newly minted API token
     #     echo "::add-mask::${api_token}"
 
-    #     # see the next step in the workflow for an example of using this step output
+    #     # Put the API token in the output variable so that it can be used in the next step
     #     echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
 
     # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
     #   run: |
     #     TWINE_USERNAME=__token__ \
     #     TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }} \
-    #     python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/* --verbose
-
-    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-      run: python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/* --verbose
+    #     python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
