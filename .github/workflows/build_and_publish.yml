@@ -82,6 +82,6 @@ jobs:
 
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       run: |
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ steps.mint-token.outputs.api-token }}
+        TWINE_USERNAME=__token__
+        TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }}
         python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
