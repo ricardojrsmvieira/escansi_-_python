@@ -76,6 +76,8 @@ jobs:
 
         echo "IM HERE 2"
 
+        echo "https://${{ inputs.test && 'testpypi' || 'pypi' }}.org/_/oidc/mint-token"
+
         # exchange the OIDC token for an API token
         resp=$(curl -X POST https://${{ inputs.test && 'testpypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
         echo "IM HERE 3"
