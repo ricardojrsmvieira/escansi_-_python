@@ -54,16 +54,26 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-    - name: Install Twine and Packaging
-      run: python3 -m pip install --upgrade twine packaging
+    - name: Install necessary packages for publishing
+      run: python3 -m pip install --upgrade \
+        twine \
+        packaging \
+        pypi-attestations
 
-    - name: Attest the distribution packages
+    - name: Attest the distribution packages (GitHub Attestations) 🔏
       uses: actions/attest@v4
       with:
         subject-path: dist/
 
+    - name: Attest the distribution packages (PyPI Attestations) 🔏
+      run: python3 -m pypi-attestations attest dist/*
+
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-      run: python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
+      run: |
+        python3 -m twine upload \
+        --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+        --attestations \
+        dist/*
 
 
     # REFERENCE:
@@ -71,7 +81,11 @@ jobs:
     # - We do not need them since twine does the OIDC token exchange for us if no token is provided.
     # - https://docs.pypi.org/trusted-publishers/using-a-publisher/ has the base implementation, but here I added some
     #   tweaks to support both PyPI and Test PyPI.
-    # - Note that this was only tested with test.pypi, not with pypi itself.
+    # - IMPORTANT NOTES:
+    #   - This was only tested with test.pypi, not with pypi itself.
+    #   - The --attestations flag is not implemented here.
+    #   - The --verbose option is not implemented here.
+
 
     # - name: mint API token
     #   id: mint-token
