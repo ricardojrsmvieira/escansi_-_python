@@ -57,8 +57,8 @@ jobs:
     - name: Install necessary packages for publishing
       run: python3 -m pip install --upgrade \
         twine \
-        packaging \
-        pypi-attestations
+        packaging
+        python -m pip install pypi-attestations
 
     - name: Attest the distribution packages (GitHub Attestations) 🔏
       uses: actions/attest@v4
