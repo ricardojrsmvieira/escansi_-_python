@@ -54,8 +54,8 @@ jobs:
         name: python-package-distributions
         path: dist/
 
-    - name: Install Twine
-      run: python3 -m pip install --upgrade twine
+    - name: Install Twine and Packaging
+      run: python3 -m pip install --upgrade twine packaging
 
     - name: Attest the distribution packages
       uses: actions/attest@v4
