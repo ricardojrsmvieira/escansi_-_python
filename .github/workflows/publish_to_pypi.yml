@@ -9,8 +9,17 @@ concurrency:
 jobs:
   build_and_publish:
     name: Build and publish 📦
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
-    uses: ./.github/workflows/build_and_publish.yml
-    with:
-      test: false
+      attestations: write
+      artifact-metadata: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/escansi
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+    - name: Build and publish to PyPI
+      uses: ./.github/actions/build_and_publish
