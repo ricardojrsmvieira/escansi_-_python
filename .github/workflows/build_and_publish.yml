@@ -55,7 +55,10 @@ jobs:
         path: dist/
 
     - name: Install necessary packages for publishing
-      run: python3 -m pip install --upgrade twine packaging pypi-attestations
+      run: python3 -m pip install --upgrade \
+        twine \
+        packaging \
+        pypi-attestations
 
     - name: Attest the distribution packages (GitHub Attestations) 🔏
       uses: actions/attest@v4
@@ -63,7 +66,7 @@ jobs:
         subject-path: dist/
 
     - name: Attest the distribution packages (PyPI Attestations) 🔏
-      run: python3 -m pypi-attestations attest dist/*
+      run: python3 -m pypi_attestations sign dist/*
 
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       run: |
