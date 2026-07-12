@@ -84,4 +84,4 @@ jobs:
       run: |
         TWINE_USERNAME=__token__ \
         TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }} \
-        python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
+        python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/* --verbose
