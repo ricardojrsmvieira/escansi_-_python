@@ -74,6 +74,7 @@ jobs:
         python3 -m twine upload \
         --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
         --attestations \
+        --verbose \
         dist/*
 
 
