@@ -24,7 +24,8 @@ jobs:
         python-version: "3.x"
 
     - name: Install pypa/build
-      run: python3 -m pip install build --user
+      run: python3 -m pip install --upgrade build
+      # run: python3 -m pip install build --user
 
     - name: Build a binary wheel and a source tarball
       run: python3 -m build
@@ -43,14 +44,23 @@ jobs:
       name: ${{ inputs.test && 'test_pypi' || 'pypi' }}
       url: ${{ inputs.test && 'https://test.pypi.org/p/escansi' || 'https://pypi.org/p/escansi' }}
     permissions:
-      id-token: write # Mandatory for trusted publishing
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
     - name: Download all the dists
       uses: actions/download-artifact@v6
       with:
         name: python-package-distributions
         path: dist/
-    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-      uses: pypa/gh-action-pypi-publish@v1.14.0 # Already attestated
+
+    - name: Install Twine
+      run: python3 -m pip install --upgrade twine
+
+    - name: Attest the distribution packages
+      uses: actions/attest@v4
       with:
-        repository-url: ${{ inputs.test && 'https://test.pypi.org/legacy/' || 'https://upload.pypi.org/legacy/' }}
+        subject-path: dist/
+
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+      run: python3 -m twine upload --repository ${{ inputs.test && 'testpypi' || 'pypi' }} dist/*
