@@ -1,0 +1,116 @@
+name: Build and publish 📦
+
+on:
+  workflow_call:
+    inputs:
+      test:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.x"
+
+    - name: Install pypa/build
+      run: python3 -m pip install --upgrade build
+
+    - name: Build a binary wheel and a source tarball
+      run: python3 -m build
+
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v5
+      with:
+        name: python-package-distributions
+        path: dist/
+
+  publish:
+    name: Publish to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: ${{ inputs.test && 'test_pypi' || 'pypi' }}
+      url: ${{ inputs.test && 'https://test.pypi.org/p/escansi' || 'https://pypi.org/p/escansi' }}
+    permissions:
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v6
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Install necessary packages for publishing
+      run: python3 -m pip install --upgrade \
+        twine \
+        packaging \
+        pypi-attestations \
+        pyOpenSSL
+
+    - name: Attest the distribution packages (GitHub Attestations) 🔏
+      uses: actions/attest@v4
+      with:
+        subject-path: dist/
+
+    - name: Attest the distribution packages (PyPI Attestations) 🔏
+      run: python3 -m pypi_attestations sign dist/*
+
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+      run: |
+        python3 -m twine upload \
+        --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+        --attestations \
+        --verbose \
+        dist/*
+
+
+    # REFERENCE:
+    # - The next 2 steps could replace the above last step.
+    # - We do not need them since twine does the OIDC token exchange for us if no token is provided.
+    # - https://docs.pypi.org/trusted-publishers/using-a-publisher/ has the base implementation, but here I added some
+    #   tweaks to support both PyPI and Test PyPI.
+    # - IMPORTANT NOTES:
+    #   - This was only tested with test.pypi, not with pypi itself.
+    #   - The --attestations flag is not implemented here.
+    #   - The --verbose option is not implemented here.
+
+    # - name: mint API token
+    #   id: mint-token
+    #   run: |
+    #     Retrieve the ambient OIDC token
+    #     resp=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+    #       "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=${{ inputs.test && 'testpypi' || 'pypi' }}")
+    #     oidc_token=$(jq -r '.value' <<< "${resp}")
+
+    #     # Exchange the OIDC token for an API token
+    #     resp=$(curl -X POST https://${{ inputs.test && 'test.pypi' || 'pypi' }}.org/_/oidc/mint-token -d "{\"token\": \"${oidc_token}\"}")
+    #     api_token=$(jq -r '.token' <<< "${resp}")
+
+    #     # Mask the newly minted API token
+    #     echo "::add-mask::${api_token}"
+
+    #     # Put the API token in the output variable so that it can be used in the next step
+    #     echo "api-token=${api_token}" >> "${GITHUB_OUTPUT}"
+
+    # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+    #   run: |
+    #     TWINE_USERNAME=__token__ \
+    #     TWINE_PASSWORD=${{ steps.mint-token.outputs.api-token }} \
+    #     python3 -m twine upload \
+    #     --repository ${{ inputs.test && 'testpypi' || 'pypi' }} \
+    #     --attestations \
+    #     --verbose \
+    #     dist/*

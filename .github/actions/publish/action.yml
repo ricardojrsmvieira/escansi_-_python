@@ -1,0 +1,42 @@
+name: Publish 📦
+
+inputs:
+  test:
+    required: false
+    type: boolean
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v6
+      with:
+        name: python-package-distributions
+        path: dist/
+
+    - name: Install necessary packages for publishing
+      shell: bash
+      run: python3 -m pip install --upgrade \
+        twine \
+        packaging \
+        pypi-attestations \
+        pyOpenSSL
+
+    - name: Attest the distribution packages (GitHub Attestations) 🔏
+      uses: actions/attest@v4
+      with:
+        subject-path: dist/
+
+    - name: Attest the distribution packages (PyPI Attestations) 🔏
+      shell: bash
+      run: python3 -m pypi_attestations sign dist/*
+
+    - name: Publish distribution 📦 to ${{ inputs.test == true && 'Test PyPI' || 'PyPI' }}
+      shell: bash
+      run: |
+        python3 -m twine upload \
+        --repository ${{ inputs.test == true && 'testpypi' || 'pypi' }} \
+        --attestations \
+        --verbose \
+        dist/*
