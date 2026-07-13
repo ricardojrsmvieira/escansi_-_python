@@ -45,22 +45,11 @@ runs:
           echo "repository=pypi" >> "$GITHUB_OUTPUT"
         fi
 
-    # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-    #   shell: bash
-    #   run: |
-    #     python3 -m twine upload \
-    #     --repository "${{ steps.repo.outputs.repository }}" \
-    #     --attestations \
-    #     --verbose \
-    #     dist/*
-
-    - name: Publish distribution 📦 to GitHub
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       shell: bash
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ inputs.github-token }}
       run: |
         python3 -m twine upload \
-        --repository-url https://api.github.com/orgs/${{ github.repository_owner }}/packages/pypi/upload \
+        --repository "${{ steps.repo.outputs.repository }}" \
+        --attestations \
         --verbose \
         dist/*
