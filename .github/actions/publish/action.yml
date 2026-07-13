@@ -61,6 +61,5 @@ runs:
       run: |
         python3 -m twine upload \
         --repository-url https://api.github.com/orgs/${{ github.repository_owner }}/packages/pypi/upload \
-        --attestations \
         --verbose \
         dist/*
