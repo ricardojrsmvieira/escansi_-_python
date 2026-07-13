@@ -57,9 +57,9 @@ runs:
     - name: Publish distribution 📦 to GitHub
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ inputs.github-token }}
       run: |
-        GITHUB_TOKEN=${{ inputs.github-token }} \
         python3 -m twine upload \
         --repository-url https://api.github.com/orgs/${{ github.repository_owner }}/packages/pypi/upload \
         --verbose \
