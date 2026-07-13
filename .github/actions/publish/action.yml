@@ -5,6 +5,10 @@ inputs:
     required: false
     type: boolean
     default: false
+  github-token:
+    required: true
+    type: string
+
 
 runs:
   using: "composite"
@@ -41,19 +45,20 @@ runs:
           echo "repository=pypi" >> "$GITHUB_OUTPUT"
         fi
 
-    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
-      shell: bash
-      run: |
-        python3 -m twine upload \
-        --repository "${{ steps.repo.outputs.repository }}" \
-        --attestations \
-        --verbose \
-        dist/*
+    # - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
+    #   shell: bash
+    #   run: |
+    #     python3 -m twine upload \
+    #     --repository "${{ steps.repo.outputs.repository }}" \
+    #     --attestations \
+    #     --verbose \
+    #     dist/*
 
     - name: Publish distribution 📦 to GitHub
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
-        GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" \
         python3 -m twine upload \
         --repository-url https://api.github.com/orgs/${{ github.repository_owner }}/packages/pypi/upload \
         --attestations \
