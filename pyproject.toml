@@ -2,18 +2,20 @@
 requires = ["hatchling >= 1.26"]
 build-backend = "hatchling.build"
 
+
 [project]
 name = "escansi"
-version = "0.3.1"
+description = "Python library to easily create ANSI escape codes and add them to your text."
+version = "0.3.10"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
 authors = [
   { name = "Ricardo JRSM Vieira", email = "ricardojrsmvieira@gmail.com" }
 ]
 maintainers = [
   { name = "Ricardo JRSM Vieira", email = "ricardojrsmvieira@gmail.com" }
 ]
-description = "Python library to easily create ANSI escape codes and add them to your text."
-readme = "README.md"
-requires-python = ">=3.0"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -23,9 +25,17 @@ classifiers = [
     "Topic :: Terminals",
     "Typing :: Typed"
 ]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
+requires-python = ">=3.0"
+dependencies = []
+
 
 [project.urls]
 Homepage = "https://github.com/ricardojrsmvieira/escansi"
 Issues = "https://github.com/ricardojrsmvieira/escansi/issues"
+
+
+[[tool.uv.index]]
+name = "test_pypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true

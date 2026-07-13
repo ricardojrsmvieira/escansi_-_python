@@ -14,6 +14,7 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
+      contents: read
     environment:
       name: test_pypi
       url: https://test.pypi.org/p/escansi
@@ -25,4 +26,3 @@ jobs:
       uses: ./.github/actions/build_and_publish
       with:
         test: true
-        github-token: ${{ secrets.GITHUB_TOKEN }}
