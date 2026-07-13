@@ -32,11 +32,20 @@ runs:
       shell: bash
       run: python3 -m pypi_attestations sign dist/*
 
-    - name: Publish distribution 📦 to ${{ inputs.test == true && 'Test PyPI' || 'PyPI' }}
+    - id: repo
+      shell: bash
+      run: |
+        if [[ "${{ inputs.test }}" == "true" ]]; then
+          echo "repository=testpypi" >> "$GITHUB_OUTPUT"
+        else
+          echo "repository=pypi" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       shell: bash
       run: |
         python3 -m twine upload \
-        --repository ${{ inputs.test == true && 'testpypi' || 'pypi' }} \
+        --repository "${{ steps.repo.outputs.repository }}" \
         --attestations \
         --verbose \
         dist/*
