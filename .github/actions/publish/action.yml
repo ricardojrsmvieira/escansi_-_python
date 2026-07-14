@@ -22,7 +22,7 @@ runs:
 
     - name: Attest the distribution packages (PyPI Attestations) 🔏
       shell: bash
-      run: uvx --from pypi-attestations pypi_attestations sign dist/*
+      run: uvx pypi-attestations sign dist/*
 
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       shell: bash
