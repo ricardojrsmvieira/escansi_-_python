@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling >= 1.26"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.11.29,<0.12"]
+build-backend = "uv_build"
 
 
 [project]
@@ -29,13 +29,19 @@ requires-python = ">=3.0"
 dependencies = []
 
 
+[dependency-groups]
+dev = [
+  {include-group = "lint"},
+  {include-group = "test"}
+]
+lint = [
+  "ruff"
+]
+test = [
+  "pytest"
+]
+
+
 [project.urls]
 Homepage = "https://github.com/ricardojrsmvieira/escansi"
 Issues = "https://github.com/ricardojrsmvieira/escansi/issues"
-
-
-[[tool.uv.index]]
-name = "test_pypi"
-url = "https://test.pypi.org/simple/"
-publish-url = "https://test.pypi.org/legacy/"
-explicit = true

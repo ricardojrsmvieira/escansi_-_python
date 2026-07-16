@@ -15,7 +15,7 @@ runs:
 
     - name: Build a binary wheel and a source tarball
       shell: bash
-      run: uv build
+      run: uv build --no-sources
 
     - name: Store the distribution packages
       uses: actions/upload-artifact@v5

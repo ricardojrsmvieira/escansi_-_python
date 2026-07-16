@@ -32,3 +32,8 @@ runs:
         else
           uv publish
         fi
+
+    - name: Minimize uv cache
+      shell: bash
+      when: always()
+      run: uv cache prune --ci
