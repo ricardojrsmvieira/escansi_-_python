@@ -9,10 +9,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v6
-      with:
-        persist-credentials: ${{ inputs.persist-credentials }}
+    # README/TODO: When you publish this action, uncomment this and remove checking from other actions/workflows.
+    # - name: Checkout repository
+    #   uses: actions/checkout@v6
+    #   with:
+    #     persist-credentials: ${{ inputs.persist-credentials }}
 
     - name: Set up Python
       uses: actions/setup-python@v6
