@@ -34,6 +34,6 @@ runs:
         fi
 
     - name: Minimize uv cache
+      if: ${{ always() }}
       shell: bash
-      when: always()
       run: uv cache prune --ci
