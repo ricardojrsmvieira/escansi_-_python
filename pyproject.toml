@@ -6,7 +6,7 @@ build-backend = "uv_build"
 [project]
 name = "escansi"
 description = "Python library to easily create ANSI escape codes and add them to your text."
-version = "0.3.10"
+version = "0.3.11"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
