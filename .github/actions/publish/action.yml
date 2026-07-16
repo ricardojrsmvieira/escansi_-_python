@@ -5,27 +5,15 @@ inputs:
     required: false
     type: boolean
     default: false
-  github-token:
-    required: true
-    type: string
-
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Download all the dists
       uses: actions/download-artifact@v6
       with:
         name: python-package-distributions
         path: dist/
-
-    - name: Install necessary packages for publishing
-      shell: bash
-      run: python3 -m pip install --upgrade \
-        twine \
-        packaging \
-        pypi-attestations \
-        pyOpenSSL
 
     - name: Attest the distribution packages (GitHub Attestations) 🔏
       uses: actions/attest@v4
@@ -34,22 +22,18 @@ runs:
 
     - name: Attest the distribution packages (PyPI Attestations) 🔏
       shell: bash
-      run: python3 -m pypi_attestations sign dist/*
-
-    - id: repo
-      shell: bash
-      run: |
-        if [[ "${{ inputs.test }}" == "true" ]]; then
-          echo "repository=testpypi" >> "$GITHUB_OUTPUT"
-        else
-          echo "repository=pypi" >> "$GITHUB_OUTPUT"
-        fi
+      run: uvx pypi-attestations sign dist/*
 
     - name: Publish distribution 📦 to ${{ inputs.test && 'Test PyPI' || 'PyPI' }}
       shell: bash
       run: |
-        python3 -m twine upload \
-        --repository "${{ steps.repo.outputs.repository }}" \
-        --attestations \
-        --verbose \
-        dist/*
+        if [[ "${{ inputs.test }}" == "true" ]]; then
+          uv publish --index test_pypi
+        else
+          uv publish
+        fi
+
+    - name: Minimize uv cache
+      if: ${{ always() }}
+      shell: bash
+      run: uv cache prune --ci

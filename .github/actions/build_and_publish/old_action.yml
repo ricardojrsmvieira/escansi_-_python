@@ -5,6 +5,9 @@ inputs:
     required: false
     type: boolean
     default: false
+  github-token:
+    required: true
+    type: string
 
 runs:
   using: composite
@@ -15,3 +18,4 @@ runs:
       uses: ./.github/actions/publish
       with:
         test: ${{ inputs.test }}
+        github-token: ${{ inputs.github-token }}
