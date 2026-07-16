@@ -19,8 +19,5 @@ jobs:
       name: pypi
       url: https://pypi.org/p/escansi
     steps:
-    - uses: actions/checkout@v6
-      with:
-        persist-credentials: false
     - name: Build and publish to PyPI
       uses: ./.github/actions/build_and_publish
