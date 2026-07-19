@@ -1,13 +1,7 @@
+# ---> Standard library imports <--- #
 from typing import Literal, overload
 
-from .types import (
-  ClearActionNameType,
-  CursorActionNameType,
-  CursorActionsThatHaveNoNumberParametersNameType,
-  CursorActionsThatHaveOneNumberParameterNameType,
-  CursorActionsThatHaveTwoNumberParametersNameType,
-  FormatNameType,
-)
+# ---> Local imports <--- #
 from .constants import (
   CLEAR_CODES,
   COLOR_CODES,
@@ -17,6 +11,14 @@ from .constants import (
   CURSOR_ACTIONS_THAT_HAVE_TWO_NUMBER_PARAMETERS,
   CURSOR_CODES,
   FORMAT_CODES,
+)
+from .types import (
+  ClearActionNameType,
+  CursorActionNameType,
+  CursorActionsThatHaveNoNumberParametersNameType,
+  CursorActionsThatHaveOneNumberParameterNameType,
+  CursorActionsThatHaveTwoNumberParametersNameType,
+  FormatNameType,
 )
 
 
@@ -45,23 +47,21 @@ def ForeColor(
   if isinstance(color_or_grey_or_red, str):
     if color_or_grey_or_red in COLOR_NAMES:
       return f"\033[{COLOR_CODES['foreground'][color_or_grey_or_red]}m"
-    else:
-      if color_or_grey_or_red.startswith("#") and len(color_or_grey_or_red) == 7:
-        try:
-          r = int(color_or_grey_or_red[1:3], 16)
-          g = int(color_or_grey_or_red[3:5], 16)
-          b = int(color_or_grey_or_red[5:7], 16)
-          return f"\033[38;2;{r};{g};{b}m"
-        except ValueError:
-          raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
-      else:
+    if color_or_grey_or_red.startswith("#") and len(color_or_grey_or_red) == 7:
+      try:
+        r = int(color_or_grey_or_red[1:3], 16)
+        g = int(color_or_grey_or_red[3:5], 16)
+        b = int(color_or_grey_or_red[5:7], 16)
+        return f"\033[38;2;{r};{g};{b}m"
+      except ValueError:
         raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
+    else:
+      raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
   elif green is None or blue is None:
     if isinstance(color_or_grey_or_red, tuple):
       r, g, b = color_or_grey_or_red
       return f"\033[38;2;{r};{g};{b}m"
-    else:
-      return f"\033[38;5;{color_or_grey_or_red}m"
+    return f"\033[38;5;{color_or_grey_or_red}m"
   else:
     return f"\033[38;2;{color_or_grey_or_red};{green};{blue}m"
 
@@ -91,23 +91,21 @@ def BackColor(
   if isinstance(color_or_grey_or_red, str):
     if color_or_grey_or_red in COLOR_NAMES:
       return f"\033[{COLOR_CODES['background'][color_or_grey_or_red]}m"
-    else:
-      if color_or_grey_or_red.startswith("#") and len(color_or_grey_or_red) == 7:
-        try:
-          r = int(color_or_grey_or_red[1:3], 16)
-          g = int(color_or_grey_or_red[3:5], 16)
-          b = int(color_or_grey_or_red[5:7], 16)
-          return f"\033[48;2;{r};{g};{b}m"
-        except ValueError:
-          raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
-      else:
+    if color_or_grey_or_red.startswith("#") and len(color_or_grey_or_red) == 7:
+      try:
+        r = int(color_or_grey_or_red[1:3], 16)
+        g = int(color_or_grey_or_red[3:5], 16)
+        b = int(color_or_grey_or_red[5:7], 16)
+        return f"\033[48;2;{r};{g};{b}m"
+      except ValueError:
         raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
+    else:
+      raise ValueError(f"Invalid color code or name: '{color_or_grey_or_red}'")
   elif green is None or blue is None:
     if isinstance(color_or_grey_or_red, tuple):
       r, g, b = color_or_grey_or_red
       return f"\033[48;2;{r};{g};{b}m"
-    else:
-      return f"\033[48;5;{color_or_grey_or_red}m"
+    return f"\033[48;5;{color_or_grey_or_red}m"
   else:
     return f"\033[48;2;{color_or_grey_or_red};{green};{blue}m"
 
@@ -121,10 +119,9 @@ def Format(format: FormatNameType | tuple[FormatNameType, ...]) -> str:
 def ResetFormat(format: FormatNameType | tuple[FormatNameType, ...] | Literal["all"] = "all") -> str:
   if format == "all":
     return "\033[0m"
-  elif isinstance(format, tuple):
+  if isinstance(format, tuple):
     return "".join(f"\033[{FORMAT_CODES['reset'][f]}m" for f in format)
-  else:
-    return f"\033[{FORMAT_CODES['reset'][format]}m"
+  return f"\033[{FORMAT_CODES['reset'][format]}m"
 
 
 #region overloads
@@ -158,12 +155,11 @@ def Cursor(
 ) -> str:
   if action in CURSOR_ACTIONS_THAT_HAVE_ONE_NUMBER_PARAMETER:
     return f"\033[{n}{CURSOR_CODES[action]}"
-  elif action in CURSOR_ACTIONS_THAT_HAVE_TWO_NUMBER_PARAMETERS:
+  if action in CURSOR_ACTIONS_THAT_HAVE_TWO_NUMBER_PARAMETERS:
     return f"\033[{n};{m}{CURSOR_CODES[action]}"
-  elif action in CURSOR_ACTIONS_THAT_HAVE_NO_NUMBER_PARAMETERS:
+  if action in CURSOR_ACTIONS_THAT_HAVE_NO_NUMBER_PARAMETERS:
     return f"\033[{CURSOR_CODES[action]}"
-  else:
-    raise ValueError(f"Invalid cursor action: '{action}'")
+  raise ValueError(f"Invalid cursor action: '{action}'")
 
 
 def Clear(action: ClearActionNameType = "all") -> str:

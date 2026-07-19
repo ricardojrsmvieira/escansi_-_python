@@ -1,5 +1,7 @@
+# ---> Standard library imports <--- #
 from typing import Literal, get_args
 
+# ---> Local imports <--- #
 from .types import (
   ClearActionNameType,
   ColorNameType,
@@ -7,7 +9,7 @@ from .types import (
   CursorActionsThatHaveNoNumberParametersNameType,
   CursorActionsThatHaveOneNumberParameterNameType,
   CursorActionsThatHaveTwoNumberParametersNameType,
-  FormatNameType
+  FormatNameType,
 )
 
 

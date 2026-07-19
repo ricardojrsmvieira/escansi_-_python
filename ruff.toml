@@ -1,47 +1,44 @@
 line-length = 100
 
 [lint]
-preview = true
-explicit-preview-rules = true
 select = ["ALL"]
 ignore = [
-  # "D103"
   # START: Conflicting lint rules with formatter. See https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
-  'tab-indentation',
-  'indentation-with-invalid-multiple',
-  'indentation-with-invalid-multiple-comment',
-  'over-indented',
-  'incorrect-blank-line-before-class',
-  'docstring-tab-indentation',
-  'triple-single-quotes',
-  'bad-quotes-inline-string',
-  'bad-quotes-multiline-string',
-  'bad-quotes-docstring',
-  'avoidable-escaped-quote',
-  'unnecessary-escaped-quote',
-  'missing-trailing-comma',
-  'prohibited-trailing-comma',
-  'multi-line-implicit-string-concatenation',
-  # Incompatible with the formatter's treatment of import statements when set to non-default values:
-  # (Present on docs but "Unknown rule selector" warnings appearing)
-  # 'force-single-line',
-  # 'force-wrap-aliases',
-  # 'lines-after-imports',
-  # 'lines-between-types',
-  # 'split-on-trailing-comma',
+  # 'W191', # 'tab-indentation',
+  # 'E111', # 'indentation-with-invalid-multiple',
+  # 'E114', # 'indentation-with-invalid-multiple-comment',
+  # 'E117', # 'over-indented',
+  'D203', # 'incorrect-blank-line-before-class',
+  # 'D206', # 'docstring-tab-indentation',
+  # 'D300', # 'triple-single-quotes',
+  'Q000', # 'bad-quotes-inline-string',
+  # 'Q001', # 'bad-quotes-multiline-string',
+  # 'Q002', # 'bad-quotes-docstring',
+  'Q003', # 'avoidable-escaped-quote',
+  # 'Q004', # 'unnecessary-escaped-quote',
+  'COM812', # 'missing-trailing-comma',
+  # 'COM819', # 'prohibited-trailing-comma',
+  # 'ISC002', # 'multi-line-implicit-string-concatenation',
+
   # Not present on documentation but still conflicting with the formatter:
-  'multi-line-summary-first-line',
-  'multi-line-summary-second-line'
+  'D212', # 'multi-line-summary-first-line',
+  # 'D213', # 'multi-line-summary-second-line'
   # END:   Conflicting lint rules with formatter. See https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
 ]
 
 
+[lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+lines-after-imports = 2
+
+[lint.isort.import-heading]
+future = "---> Future imports <--- #"
+standard-library = "---> Standard library imports <--- #"
+third-party = "---> Third party imports <--- #"
+first-party = "---> First party imports <--- #"
+local-folder = "---> Local imports <--- #"
+
+
 [format]
-# preview = true
 quote-style = "single"
-# indent-style = "tab"
-# docstring-code-format = true
-# docstring-code-line-length = 20
-
-
-
