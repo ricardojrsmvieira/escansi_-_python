@@ -1,0 +1,13 @@
+[lint]
+preview = true
+select = ["ALL"]
+ignore = [
+  "D103"
+]
+
+
+[format]
+preview = true
+
+
+
