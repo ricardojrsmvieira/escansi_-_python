@@ -1,13 +1,47 @@
+line-length = 100
+
 [lint]
 preview = true
+explicit-preview-rules = true
 select = ["ALL"]
 ignore = [
-  "D103"
+  # "D103"
+  # START: Conflicting lint rules with formatter. See https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'tab-indentation',
+  'indentation-with-invalid-multiple',
+  'indentation-with-invalid-multiple-comment',
+  'over-indented',
+  'incorrect-blank-line-before-class',
+  'docstring-tab-indentation',
+  'triple-single-quotes',
+  'bad-quotes-inline-string',
+  'bad-quotes-multiline-string',
+  'bad-quotes-docstring',
+  'avoidable-escaped-quote',
+  'unnecessary-escaped-quote',
+  'missing-trailing-comma',
+  'prohibited-trailing-comma',
+  'multi-line-implicit-string-concatenation',
+  # Incompatible with the formatter's treatment of import statements when set to non-default values:
+  # (Present on docs but "Unknown rule selector" warnings appearing)
+  # 'force-single-line',
+  # 'force-wrap-aliases',
+  # 'lines-after-imports',
+  # 'lines-between-types',
+  # 'split-on-trailing-comma',
+  # Not present on documentation but still conflicting with the formatter:
+  'multi-line-summary-first-line',
+  'multi-line-summary-second-line'
+  # END:   Conflicting lint rules with formatter. See https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
 ]
 
 
 [format]
-preview = true
+# preview = true
+quote-style = "single"
+# indent-style = "tab"
+# docstring-code-format = true
+# docstring-code-line-length = 20
 
 
 
