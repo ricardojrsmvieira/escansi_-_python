@@ -88,7 +88,7 @@ FORMAT_CODES: dict[Literal['apply', 'reset'], dict[FormatNameType, int]] = {
   }
 }
 
-# ruff:ignore[multiple-spaces-after-comma]
+
 CURSOR_CODES: dict[CursorActionNameType, str] = {
   'up': 'A',                    'u': 'A',
   'down': 'B',                  'd': 'B',
@@ -104,7 +104,7 @@ CURSOR_CODES: dict[CursorActionNameType, str] = {
   'show': '?25h',               's': '?25h'
 }
 
-# ruff:ignore[multiple-spaces-after-comma]
+
 CLEAR_CODES: dict[ClearActionNameType, str] = {
   'all': '2J',                  'a': '2J',
   'begin_to_cursor': '1J',      'btc': '1J',
