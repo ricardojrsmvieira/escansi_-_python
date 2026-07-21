@@ -41,20 +41,63 @@ ignore = [
 
   ##################################################################################################
   # => RULES THAT ARE INCOMPATIBLE WITH EACH OTHER:
+  #    Solved by defining lint.pycodestyle.convention
 
-  # => D203 & D211
-  'D203', # 'incorrect-blank-line-before-class', # Notice that this rule is also conflicting with the formatter.
-  # 'D211', # 'no-blank-line-before-class'
+  # # => D203 & D211
+  # 'D203', # 'incorrect-blank-line-before-class', # Notice that this rule is also conflicting with the formatter.
+  # # 'D211', # 'no-blank-line-before-class'
 
-  # => D212 & D213
+  # # => D212 & D213
   # 'D212', # 'multi-line-summary-first-line',
-  'D213', # 'multi-line-summary-second-line'
+  # # 'D213', # 'multi-line-summary-second-line'
 
 
   ##################################################################################################
+  # => RULES IGNORED BECAUSE THEY ARE SPECIFIC TO A PARTICULAR LIBRARY OR FRAMEWORK:
+  # https://pypi.org/project/apache-airflow/
+  'AIR',
+  # https://pypi.org/project/fastapi/
+  'FAST',
+  # https://pypi.org/project/Flask/
+  'S201',
+  # https://pypi.org/project/Django/
+  'S308',
+  'S610',
+  'S611',
+  'DJ',
+  # https://pypi.org/project/paramiko/
+  'S507',
+  'S508',
+  'S601',
+  # https://pypi.org/project/pysnmp/
+  'S509',
+  # https://pypi.org/project/Jinja2/
+  'S701',
+  # https://pypi.org/project/Mako/
+  'S702',
+  # https://pypi.org/project/MarkupSafe/
+  'S704',
+  # https://pypi.org/project/pytest/
+  'PT',
+  'RUF043',
+  'RUF061',
+  # https://pypi.org/project/numpy/
+  'NPY',
+  # https://pypi.org/project/pandas/
+  'PD',
+  # The Ruff Formatter
+  'RUF028',
+
+  ##################################################################################################
   # => OTHER RULES IGNORED BY PERSONAL PREFERENCE:
+  'COM812',
+  'FIX',
+  'PYI051',
   'Q003',
-  'COM812'
+  'SIM105',
+  'TID253',
+  'TD002',
+  'TC'
 ]
 
 ####################################################################################################
@@ -73,6 +116,28 @@ first-party = "---> First party imports <--- #"
 local-folder = "---> Local imports <--- #"
 
 ####################################################################################################
+#                                        LINT.FLAKE8-BANDIT                                        #
+####################################################################################################
+[lint.flake8-bandit]
+check-typed-exception = true
+
+####################################################################################################
+#                                       LINT.FLAKE8-BUILTINS                                       #
+####################################################################################################
+[lint.flake8-builtins]
+strict-checking = true
+allowed-modules = []
+
+####################################################################################################
+#                                  LINT.FLAKE8-IMPORT-CONVENTIONS                                  #
+####################################################################################################
+[lint.flake8-import-conventions]
+banned-from = []
+
+[lint.flake8-import-conventions.extend-aliases]
+# "dask.dataframe" = "dd"
+
+####################################################################################################
 #                                        LINT.FLAKE8-QUOTES                                        #
 ####################################################################################################
 [lint.flake8-quotes]
@@ -80,6 +145,27 @@ inline-quotes = "single"
 multiline-quotes = "single"
 docstring-quotes = "double"
 
+####################################################################################################
+#                                           LINT.MCCABE                                            #
+####################################################################################################
+[lint.mccabe]
+max-complexity = 10
+
+####################################################################################################
+#                                         LINT.PYCODSTYLE                                          #
+####################################################################################################
+[lint.pycodestyle]
+convention = "numpy"
+# max-doc-length = 88 TODO: For W505. If not setted it is ignored... but I think another rule already checks this and uses the same value of line-length, which is better. See E501.
+
+####################################################################################################
+#                                           LINT.PYLINT.                                           #
+####################################################################################################
+[lint.pylint]
+max-returns = 6
+max-branches = 12
+max-args = 5
+max-statements = 50
 
 ####################################################################################################
 #                                                                                                  #
