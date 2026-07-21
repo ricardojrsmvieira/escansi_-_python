@@ -1,0 +1,182 @@
+####################################################################################################
+#                                                                                                  #
+#                                             GENERAL                                              #
+#                                                                                                  #
+####################################################################################################
+line-length = 100
+
+
+####################################################################################################
+#                                                                                                  #
+#                                               LINT                                               #
+#                                                                                                  #
+####################################################################################################
+[lint]
+select = ['ALL']
+ignore = [
+  ##################################################################################################
+  # => See https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+
+  # => Conflicting lint rules with formatter.
+  # 'D203', # 'incorrect-blank-line-before-class', # DISABLED IN FAVOR OF D211, see next sub-section of this file.
+  # 'ISC002', # 'multi-line-implicit-string-concatenation', # Several variables define the incompatibility. See the docs
+
+  # => Actually redundant rules with formatter
+  # 'W191', # 'tab-indentation', # Incompatible with format.indent-style = "tab"
+  # 'D206', # 'docstring-tab-indentation', # Incompatible with format.indent-style = "tab"
+  # 'D300', # 'triple-single-quotes',
+  # 'Q000', # 'bad-quotes-inline-string', # Incompatible with lint.flake8-quotes.inline-quotes != format.quote-style
+  # 'Q001', # 'bad-quotes-multiline-string', # Incompatible with lint.flake8-quotes.multiline-quotes = "single"
+  # 'Q002', # 'bad-quotes-docstring', # Incompatible with lint.flake8-quotes.docstring-quotes = "single"
+  # 'Q003', # 'avoidable-escaped-quote', # DISABLED IN PERSONAL PREFERENCE, see sub-section of this file.
+  # 'Q004', # 'unnecessary-escaped-quote',
+  # 'COM812', # 'missing-trailing-comma', # DISABLED IN PERSONAL PREFERENCE, see sub-section of this file.
+  # 'COM819', # 'prohibited-trailing-comma', # Incompatible with DEFAULT format.skip-magic-trailing-comma = false
+
+
+  # => Actually in preview AND redundant rules with formatter
+  # 'E111', # 'indentation-with-invalid-multiple', # Incompatible with format.indent-width != 4
+  # 'E114', # 'indentation-with-invalid-multiple-comment', # Incompatible with format.indent-width != 4
+  # 'E117', # 'over-indented',
+
+  ##################################################################################################
+  # => RULES THAT ARE INCOMPATIBLE WITH EACH OTHER:
+  #    Solved by defining lint.pycodestyle.convention
+
+  # # => D203 & D211
+  # 'D203', # 'incorrect-blank-line-before-class', # Notice that this rule is also conflicting with the formatter.
+  # # 'D211', # 'no-blank-line-before-class'
+
+  # # => D212 & D213
+  # 'D212', # 'multi-line-summary-first-line',
+  # # 'D213', # 'multi-line-summary-second-line'
+
+
+  ##################################################################################################
+  # => RULES IGNORED BECAUSE THEY ARE SPECIFIC TO A PARTICULAR LIBRARY OR FRAMEWORK:
+  # https://pypi.org/project/apache-airflow/
+  'AIR',
+  # https://pypi.org/project/fastapi/
+  'FAST',
+  # https://pypi.org/project/Flask/
+  'S201',
+  # https://pypi.org/project/Django/
+  'S308',
+  'S610',
+  'S611',
+  'DJ',
+  # https://pypi.org/project/paramiko/
+  'S507',
+  'S508',
+  'S601',
+  # https://pypi.org/project/pysnmp/
+  'S509',
+  # https://pypi.org/project/Jinja2/
+  'S701',
+  # https://pypi.org/project/Mako/
+  'S702',
+  # https://pypi.org/project/MarkupSafe/
+  'S704',
+  # https://pypi.org/project/pytest/
+  'PT',
+  'RUF043',
+  'RUF061',
+  # https://pypi.org/project/numpy/
+  'NPY',
+  # https://pypi.org/project/pandas/
+  'PD',
+  # The Ruff Formatter
+  'RUF028',
+
+  ##################################################################################################
+  # => OTHER RULES IGNORED BY PERSONAL PREFERENCE:
+  'COM812',
+  'FIX',
+  'PYI051',
+  'Q003',
+  'SIM105',
+  'TID253',
+  'TD002',
+  'TC'
+]
+
+####################################################################################################
+#                                            LINT.ISORT                                            #
+####################################################################################################
+[lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+lines-after-imports = 2
+
+[lint.isort.import-heading]
+future = "---> Future imports <--- #"
+standard-library = "---> Standard library imports <--- #"
+third-party = "---> Third party imports <--- #"
+first-party = "---> First party imports <--- #"
+local-folder = "---> Local imports <--- #"
+
+####################################################################################################
+#                                        LINT.FLAKE8-BANDIT                                        #
+####################################################################################################
+[lint.flake8-bandit]
+check-typed-exception = true
+
+####################################################################################################
+#                                       LINT.FLAKE8-BUILTINS                                       #
+####################################################################################################
+[lint.flake8-builtins]
+strict-checking = true
+allowed-modules = ['types']
+
+####################################################################################################
+#                                  LINT.FLAKE8-IMPORT-CONVENTIONS                                  #
+####################################################################################################
+[lint.flake8-import-conventions]
+banned-from = []
+
+[lint.flake8-import-conventions.extend-aliases]
+# "dask.dataframe" = "dd"
+
+####################################################################################################
+#                                        LINT.FLAKE8-QUOTES                                        #
+####################################################################################################
+[lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+docstring-quotes = "double"
+
+####################################################################################################
+#                                           LINT.MCCABE                                            #
+####################################################################################################
+[lint.mccabe]
+max-complexity = 10
+
+####################################################################################################
+#                                        LINT.PYCODESTYLE                                          #
+####################################################################################################
+[lint.pycodestyle]
+# max-doc-length = 120 #TODO: For W505. If not setted it is ignored... but I think another rule already checks this and uses the same value of line-length, which is better. See E501.
+
+####################################################################################################
+#                                         LINT.PYDOCSTYLE                                          #
+####################################################################################################
+[lint.pydocstyle]
+convention = "numpy"
+
+####################################################################################################
+#                                           LINT.PYLINT.                                           #
+####################################################################################################
+[lint.pylint]
+max-returns = 6
+max-branches = 12
+max-args = 5
+max-statements = 50
+
+####################################################################################################
+#                                                                                                  #
+#                                              FORMAT                                              #
+#                                                                                                  #
+####################################################################################################
+# [format]
+# quote-style = "single"
+# format.skip-magic-trailing-comma = true
