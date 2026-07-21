@@ -40,18 +40,21 @@ jobs:
         run: uv run --frozen ruff check
 
 
-  formatter:
-    name: Ruff Formatter
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          persist-credentials: false
+  ##################################################################################################
+  # => The formatter is close to zero configurable. I prefer using only the linter and to keep the
+  #    format to my liking.
+  # formatter:
+  #   name: Ruff Formatter
+  #   runs-on: ubuntu-latest
+  #   needs: setup
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v6
+  #       with:
+  #         persist-credentials: false
 
-      - name: Setup the machine
-        uses: ./.github/actions/setup
+  #     - name: Setup the machine
+  #       uses: ./.github/actions/setup
 
-      - name: Run formatter
-        run: uv run --frozen ruff format --check
+  #     - name: Run formatter
+  #       run: uv run --frozen ruff format --check
