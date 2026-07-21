@@ -1,3 +1,13 @@
+"""
+Types module for the escansi package.
+
+This module defines types for ANSI escape codes, including:
+- Color names;
+- Format names;
+- Cursor actions names;
+- Clear actions names.
+"""
+
 # ---> Standard library imports <--- #
 from typing import Literal
 
@@ -36,7 +46,8 @@ type FormatNameType = Literal[
 
 
 # THIS TYPES ARE RELATED ->
-# If need to add/remove to the first one (main), consider where else it should be added/removed to keep the consistency.
+#   If need to add/remove to the first one (main), consider where else it should be added/removed
+#   to keep the consistency.
 type CursorActionNameType = Literal[
   # CursorActionsThatHaveOneNumberParameterNameType
   'up',                   'u',
@@ -75,7 +86,6 @@ type CursorActionsThatHaveNoNumberParametersNameType = Literal[
   'hide',                 'h',
   'show',                 's'
 ]
-# If need to add/remove to the first one (main), consider where else it should be added/removed to keep the consistency.
 # <- THIS TYPES ARE RELATED
 
 

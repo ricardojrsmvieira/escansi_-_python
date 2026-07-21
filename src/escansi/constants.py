@@ -1,3 +1,13 @@
+"""
+Constants module for the escansi package.
+
+This module defines constants for ANSI escape codes, including:
+- Color codes;
+- Format codes;
+- Cursor codes;
+- Clear codes.
+"""
+
 # ---> Standard library imports <--- #
 from typing import Literal, get_args
 
@@ -107,12 +117,20 @@ CLEAR_CODES: dict[ClearActionNameType, str] = {
 
 COLOR_NAMES: tuple[ColorNameType, ...] = get_args(ColorNameType.__value__)
 
-CURSOR_ACTIONS_THAT_HAVE_ONE_NUMBER_PARAMETER: tuple[CursorActionsThatHaveOneNumberParameterNameType, ...] = (
+CURSOR_ACTIONS_THAT_HAVE_ONE_NUMBER_PARAMETER: (
+  tuple[CursorActionsThatHaveOneNumberParameterNameType, ...]
+) = (
   get_args(CursorActionsThatHaveOneNumberParameterNameType.__value__)
 )
-CURSOR_ACTIONS_THAT_HAVE_TWO_NUMBER_PARAMETERS: tuple[CursorActionsThatHaveTwoNumberParametersNameType, ...] = (
+
+CURSOR_ACTIONS_THAT_HAVE_TWO_NUMBER_PARAMETERS: (
+  tuple[CursorActionsThatHaveTwoNumberParametersNameType, ...]
+) = (
   get_args(CursorActionsThatHaveTwoNumberParametersNameType.__value__)
 )
-CURSOR_ACTIONS_THAT_HAVE_NO_NUMBER_PARAMETERS: tuple[CursorActionsThatHaveNoNumberParametersNameType, ...] = (
+
+CURSOR_ACTIONS_THAT_HAVE_NO_NUMBER_PARAMETERS: (
+  tuple[CursorActionsThatHaveNoNumberParametersNameType, ...]
+) = (
   get_args(CursorActionsThatHaveNoNumberParametersNameType.__value__)
 )

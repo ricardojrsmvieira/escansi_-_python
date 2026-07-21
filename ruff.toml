@@ -126,7 +126,7 @@ check-typed-exception = true
 ####################################################################################################
 [lint.flake8-builtins]
 strict-checking = true
-allowed-modules = []
+allowed-modules = ['types']
 
 ####################################################################################################
 #                                  LINT.FLAKE8-IMPORT-CONVENTIONS                                  #
@@ -152,11 +152,16 @@ docstring-quotes = "double"
 max-complexity = 10
 
 ####################################################################################################
-#                                         LINT.PYCODSTYLE                                          #
+#                                        LINT.PYCODESTYLE                                          #
 ####################################################################################################
 [lint.pycodestyle]
+# max-doc-length = 120 #TODO: For W505. If not setted it is ignored... but I think another rule already checks this and uses the same value of line-length, which is better. See E501.
+
+####################################################################################################
+#                                         LINT.PYDOCSTYLE                                          #
+####################################################################################################
+[lint.pydocstyle]
 convention = "numpy"
-# max-doc-length = 88 TODO: For W505. If not setted it is ignored... but I think another rule already checks this and uses the same value of line-length, which is better. See E501.
 
 ####################################################################################################
 #                                           LINT.PYLINT.                                           #
