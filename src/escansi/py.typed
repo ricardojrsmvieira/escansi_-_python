@@ -1,0 +1,9 @@
+Type completeness checking
+pyright --verifytypes <lib>
+pyright --verifytypes <lib> --verbose
+pyright --verifytypes <lib> --ignoreexternal
+
+@final
+
+@abstractmethod
+raise NotImplementedError()
