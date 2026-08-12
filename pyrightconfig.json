@@ -91,7 +91,9 @@
   "reportAssertAlwaysTrue": "error",
 
   "reportSelfClsParameterName": "error",
-  "reportImplicitStringConcatenation": "information",
+  // This is a false positive when the concatenation spans multiple lines in a function call,
+  // so we disable it here. Ruff has consistent rules for this, so we can rely on that instead.
+  "reportImplicitStringConcatenation": "none",
   "reportUndefinedVariable": "error",
   "reportUnboundVariable": "error",
   "reportUnhashable": "error",
